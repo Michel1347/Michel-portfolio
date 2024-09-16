@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signature Pad</title>
+    <title>Touch Signature Pad</title>
     <style>
         .sign-pad {
             border: 1px solid #000;
@@ -17,10 +17,10 @@
     </style>
 </head>
 <body>
-    <h1>Draw Your Signature/Votre Signature</h1>
+    <h1>Draw Your Signature with Touch</h1>
     <canvas id="sign-pad" class="sign-pad"></canvas>
-    <button id="clear">Clear/Enlever</button>
-    <button id="save">Save/Sauvegarder</button>
+    <button id="clear">Clear</button>
+    <button id="save">Save</button>
     <div class="saved-sign">
         <h2>Saved Signature:</h2>
         <img id="saved-sign-img" src="" alt="No signature saved">
@@ -52,15 +52,6 @@
             drawing = false;
             ctx.closePath();
         }
-
-        // Mouse events
-        canvas.addEventListener('mousedown', (event) => {
-            startDrawing(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-        });
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mousemove', (event) => {
-            draw(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-        });
 
         // Touch events
         canvas.addEventListener('touchstart', (event) => {
