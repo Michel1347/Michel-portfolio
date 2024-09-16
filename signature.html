@@ -8,6 +8,18 @@
       canvas.addEventListener('mousemove', (event) => { if (drawing) { ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop); ctx.stroke(); } }); 
 
       //touch event
+      document.addEventListener('touchstart', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchend', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
       canvas.addEventListener('touchstart', () => {  event.preventDefault(); drawing = true; ctx.beginPath(); }); 
       canvas.addEventListener('touchend', () => { drawing = false; }); 
       canvas.addEventListener('touchmove', (event) => { event.preventDefault(); if (drawing) { ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop); ctx.stroke(); } }); 
