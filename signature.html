@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Pad</title>
+    <style>
+        .sign-pad {
+            border: 1px solid #000;
+            width: 100%;
+            height: 200px;
+            touch-action: none; /* Prevent default touch actions */
+        }
+        .saved-sign {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Draw Your Signature/Votre Signature</h1>
+    <canvas id="sign-pad" class="sign-pad"></canvas>
+    <button id="clear">Clear/Enlever</button>
+    <button id="save">Save/Sauvegarder</button>
+    <div class="saved-sign">
+        <h2>Saved Signature:</h2>
+        <img id="saved-sign-img" src="" alt="No signature saved">
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sign-pad');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        // Set canvas dimensions
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        function startDrawing(x, y) {
+            drawing = true;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function draw(x, y) {
+            if (drawing) {
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+        }
+
+        function stopDrawing() {
+            drawing = false;
+            ctx.closePath();
+        }
+
+        // Mouse events
+        canvas.addEventListener('mousedown', (event) => {
+            startDrawing(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        });
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', (event) => {
+            draw(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        });
+
+        // Touch events
+        canvas.addEventListener('touchstart', (event) => {
+            const touch = event.touches[0];
+            startDrawing(touch.clientX - canvas.offsetLeft, touch.clientY - canvas.offsetTop);
+            event.preventDefault(); // Prevent scrolling
+        });
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', (event) => {
+            const touch = event.touches[0];
+            draw(touch.clientX - canvas.offsetLeft, touch.clientY - canvas.offsetTop);
+            event.preventDefault(); // Prevent scrolling
+        });
+
+        document.getElementById('clear').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        document.getElementById('save').addEventListener('click', () => {
+            const dataURL = canvas.toDataURL();
+            localStorage.setItem('savedSign', dataURL);
+            displaySavedSign();
+        });
+
+        function displaySavedSign() {
+            const savedSign = localStorage.getItem('savedSign');
+            if (savedSign) {
+                document.getElementById('saved-sign-img').src = savedSign;
+            }
+        }
+
+        // Display the saved signature on page load
+        window.onload = displaySavedSign;
+    </script>
+</body>
+</html>
