@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sign-In</title>
+    <meta name="google-signin-client_id" content="938404765446-7ru4c9qd1f9qabim1d48j9666rb368jt.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            // Get profile information
+            var profile = googleUser.getBasicProfile();
+            var userData = {
+                id: profile.getId(),
+                name: profile.getName(),
+                imageUrl: profile.getImageUrl(),
+                email: profile.getEmail(),
+                idToken: googleUser.getAuthResponse().id_token
+            };
+
+            // Store user data in local storage
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            // Display user data
+            document.getElementById('user-info').innerText = JSON.stringify(userData, null, 2);
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+                localStorage.removeItem('userData');
+                document.getElementById('user-info').innerText = '';
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Google Sign-In Example</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <button onclick="signOut()">Sign Out</button>
+    <pre id="user-info"></pre>
+</body>
+</html>
