@@ -31,10 +31,21 @@
                 document.getElementById('user-info').innerText = '';
             });
         }
+
+        function init() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init().then(function() {
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    if (auth2.isSignedIn.get()) {
+                        onSignIn(auth2.currentUser.get());
+                    }
+                });
+            });
+        }
     </script>
 </head>
-<body>
-    <h1>Google Sign-In Example</h1>
+<body onload="init()">
+    <h1>Google Sign-In Test Page</h1>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <button onclick="signOut()">Sign Out</button>
     <pre id="user-info"></pre>
