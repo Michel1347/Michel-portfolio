@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Export Example</title>
+    <style>
+        .receipt-container {
+            background-color: white;
+            border: 2px solid #000;
+            padding: 20px;
+            width: 400px;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="content" class="receipt-container">
+        <h2>DIVERSITY MANAGEMENT AND CONSULTING LTD</h2>
+        <h3>Cash Receipt</h3>
+        <p>Cheque No: ________________________ Date: __________</p>
+        <p>Name: ________________________ Amount: __________</p>
+        <p>Amount in Words: ________________________________________</p>
+        <p>Description: _____________________________________________</p>
+        <p>Signature: ________________________ Signature: ________________________</p>
+    </div>
+
+    <button onclick="generatePDF()">Download PDF</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <script>
+        function generatePDF() {
+            const content = document.getElementById('content');
+
+            html2canvas(content).then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF();
+                pdf.addImage(imgData, 'PNG', 10, 10);
+                pdf.save('receipt.pdf');
+            });
+        }
+    </script>
+</body>
+</html>
